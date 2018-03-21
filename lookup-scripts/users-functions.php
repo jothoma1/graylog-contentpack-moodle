@@ -5,6 +5,7 @@
 // 12/12/2017
 
 function userMoodle($file) {
+// Generate a JSON with moodle userid
         define('APPROOT', dirname(__FILE__).'/');
         require_once(APPROOT.'conf/db-moodle.php');
 
@@ -27,8 +28,8 @@ function userMoodle($file) {
         file_put_contents($file, $json);
 }
 
-
 function userLDAP($file) {
+// Generate a JSON with LDAP users
         define('APPROOT', dirname(__FILE__).'/');
         require_once(APPROOT.'conf/ldap.php');
 
@@ -43,12 +44,19 @@ function userLDAP($file) {
 
                  for ($i = 0;$i<$donnee["count"];$i++){
                                 $uid = $donnee[$i]['uid'][0];
-                                $employeetype = (array_key_exists('employeetype',$donnee[$i]))? $donnee[$i]['employeetype'][0]: "non renseigne";
-                                $supannentiteeffectation = (array_key_exists('supannentiteaffectation',$donnee[$i]))? $donnee[$i]['supannentiteaffectation'][0]: "non renseigne";
+                                $employeeType = (array_key_exists('employeetype',$donnee[$i]))? $donnee[$i]['employeetype'][0]: "non renseigne";
+                                $eduPersonPrimaryAffiliation = (array_key_exists('edupersonprimaryaffiliation',$donnee[$i]))? $donnee[$i]['edupersonprimaryaffiliation'][0]: "non renseigne";
+                                $supannEntiteAffectationPrincipale = (array_key_exists('supannentiteaffectationprincipale',$donnee[$i]))? $donnee[$i]['supannentiteaffectationprincipale'][0]: "non renseigne";
+                                $supannEntiteAffectation = (array_key_exists('supannentiteaffectation',$donnee[$i]))? $donnee[$i]['supannentiteaffectation'][0]: "non renseigne";
+                                $supannEtuCursusAnnee = (array_key_exists('supannetucursusannee',$donnee[$i]))? $donnee[$i]['supannetucursusannee'][0]: "non renseigne";
+                                $supannEtuSecteurDisciplinaire = (array_key_exists('supannetusecteurdisciplinaire',$donnee[$i]))? $donnee[$i]['supannetusecteurdisciplinaire'][0]: "non renseigne";
                                 $listeUid[$uid]['uid'] = $uid;
-                                $listeUid[$uid]['employeetype'] = $employeetype;
-                                $listeUid[$uid]['supannentiteeffectation'] = $supannentiteeffectation;
-
+                                $listeUid[$uid]['employeeType'] = $employeeType;
+                                $listeUid[$uid]['edupersonprimaryaffiliation'] = $eduPersonPrimaryAffiliation;
+                                $listeUid[$uid]['supannEntiteAffectationPrincipale'] = $supannEntiteAffectationPrincipale;
+                                $listeUid[$uid]['supannEntiteAffectation'] = $supannEntiteAffectation;
+                                $listeUid[$uid]['supannEtuCursusAnnee'] = $supannEtuCursusAnnee;
+                                $listeUid[$uid]['supannEtuSecteurDisciplinaire'] = $supannEtuSecteurDisciplinaire;
         #                       print_r($donnee[$i]['employeetype']);
                          }
         #                print_r($donnee);
@@ -65,6 +73,8 @@ function userLDAP($file) {
 }
 
 function userGlobal($globalfile,$ldapfile,$moodlefile) {
+// Generate a JSON with moodle userid and LDAP informations
+    define('APPROOT', dirname(__FILE__).'/');
 
     $tabLDAP = json_decode(file_get_contents($ldapfile), true);
     $tabMoodle = json_decode(file_get_contents($moodlefile), true);
@@ -77,8 +87,12 @@ function userGlobal($globalfile,$ldapfile,$moodlefile) {
                 //$tabGlobal[$LDAP['uid']]['supannentiteeffectation'] = $LDAP['supannentiteeffectation'];
                 //$tabGlobal[$LDAP['uid']]['moodle_userid'] = $tabMoodle[$LDAP['uid']]['moodle_userid'];
                 $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['uid'] = $LDAP['uid'];
-                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['employeetype'] = $LDAP['employeetype'];
-                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['supannentiteeffectation'] = $LDAP['supannentiteeffectation'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['employeeType'] = $LDAP['employeeType'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['edupersonprimaryaffiliation'] = $LDAP['edupersonprimaryaffiliation'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['supannEntiteAffectationPrincipale'] = $LDAP['supannEntiteAffectationPrincipale'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['supannEntiteAffectation'] = $LDAP['supannEntiteAffectation'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['supannEtuCursusAnnee'] = $LDAP['supannEtuCursusAnnee'];
+                $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['supannEtuSecteurDisciplinaire'] = $LDAP['supannEtuSecteurDisciplinaire'];
                 $tabGlobal[$tabMoodle[$LDAP['uid']]['moodle_userid']]['moodle_userid'] = $tabMoodle[$LDAP['uid']]['moodle_userid'];
             }
     }
@@ -87,6 +101,5 @@ function userGlobal($globalfile,$ldapfile,$moodlefile) {
     //print_r($json);
     file_put_contents($globalfile, $json);
 }
-
 
 ?>
