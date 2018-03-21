@@ -16,6 +16,6 @@ https://moodle.org/plugins/logstore_graylog
 
 7) Enjoy !
 
-NOTE: 
+*NOTE:* 
   - The moodle-user.php lookup an user based on its moodle user ID
   - The ldap-user.php lookup an user based on its ldap user ID
