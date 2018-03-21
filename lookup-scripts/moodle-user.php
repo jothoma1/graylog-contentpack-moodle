@@ -6,7 +6,7 @@ $ldapfile = APPROOT.'data/ldapuserdata.json';
 $globalfile = APPROOT.'data/globaluserdata.json';
 require_once(APPROOT.'users-functions.php');
 
-# TODO: Gerer le raffraichissement des fichiers
+# TODO: Gerer le raffraichissement des fichiers -> via Rundeck ?
 if (file_exists($moodlefile)) {
     echo "Le fichier $moodlefile existe.";
 } else {
